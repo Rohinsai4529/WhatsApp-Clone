@@ -1,0 +1,103 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Chat</title>
+       <link rel="stylesheet" href="/style1.css">
+</head>
+<body>
+    <div class="box1">
+    <h1>New Chat</h1>
+    <form method="post" action="/chats" >
+        <label >From</label>
+        <input placeholder="Enter the Name " name="from"><br><br>
+        <label>Message</label><br><br>
+        <textarea placeholder="Enter message" name="msg" row="15" cols="40">
+        </textarea><br><br>
+        <label >To</label>
+        <input placeholder="senders name" name="to"><br>
+        <br>
+        <button >Send</button>
+    </form>
+</div>
+</body>
+</html>
+
+
+ -->
+
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Chat</title>
+  <link rel="stylesheet" href="/style1.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <div class="form-header">
+        <h1>💬 New Chat</h1>
+        <p class="subtitle">Start a new conversation</p>
+      </div>
+
+      <form method="POST" action="/chats">
+        <div class="form-group">
+          <label for="from">From</label>
+          <input 
+            type="text" 
+            id="from" 
+            name="from" 
+            required 
+            placeholder="Your name"
+            maxlength="50"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="to">To</label>
+          <input 
+            type="text" 
+            id="to" 
+            name="to" 
+            required 
+            placeholder="Recipient's name"
+            maxlength="50"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="msg">Message</label>
+          <textarea 
+            id="msg" 
+            name="msg" 
+            rows="8" 
+            required 
+            placeholder="Type your message here..."
+            maxlength="500"
+          ></textarea>
+          <small class="char-count">Characters: <span id="count">0</span>/500</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-send">📤 Send Message</button>
+          <a href="/chats" class="btn-cancel">🔙 Back to Chats</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Character counter
+    const textarea = document.querySelector('textarea[name="msg"]');
+    const counter = document.getElementById('count');
+    
+    textarea.addEventListener('input', function() {
+      counter.textContent = this.value.length;
+    });
+  </script>
+</body>
+</html>

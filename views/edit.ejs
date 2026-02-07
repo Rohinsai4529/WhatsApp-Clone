@@ -1,0 +1,79 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit page</title>
+    <link rel="stylesheet" href="/style1.css">
+</head>
+<body>
+    <div class="box1">
+    <h1>Edit Chat</h1>
+    <p>You are chat id is <%=chat._id%></p>
+    <h3>This Chat From <%=chat.from%> To <%=chat.to%></h3>
+    <form method="post" action="/chats/<%=chat._id%>?_method=put">
+        <textarea rows="5" cols="35" name="msg"><%=chat.msg%></textarea>
+        <br>
+        <button class="bt1">Save</button>
+    </form>
+    </div>
+</body>
+</html>
+
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Chat</title>
+  <link rel="stylesheet" href="/style1.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <div class="form-header">
+        <h1>✏️ Edit Chat</h1>
+        <p class="subtitle">Chat ID: <span class="id-text"><%= chat._id %></span></p>
+      </div>
+
+      <div class="chat-info">
+        <p><strong>From:</strong> <%= chat.from %></p>
+        <p><strong>To:</strong> <%= chat.to %></p>
+      </div>
+
+      <form method="POST" action="/chats/<%= chat._id %>?_method=PUT">
+        <div class="form-group">
+          <label for="msg">Message</label>
+          <textarea 
+            id="msg" 
+            name="msg" 
+            rows="6" 
+            required
+            maxlength="500"
+            placeholder="Edit your message here..."
+          ><%= chat.msg %></textarea>
+          <small class="char-count">Characters: <span id="count"><%= chat.msg.length %></span>/500</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">💾 Save Changes</button>
+          <a href="/chats" class="btn-cancel">❌ Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Character counter
+    const textarea = document.querySelector('textarea[name="msg"]');
+    const counter = document.getElementById('count');
+    
+    textarea.addEventListener('input', function() {
+      counter.textContent = this.value.length;
+    });
+  </script>
+</body>
+</html>
