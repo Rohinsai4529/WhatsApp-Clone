@@ -31,7 +31,8 @@ async function connectDB() {
     // Disable buffering to prevent timeout
     mongoose.set("bufferCommands", false);
     
-    const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/what";
+    // const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/what";
+    const MONGO_URI = "mongodb+srv://rohinsainomula:Rohinsai@2418@cluster0.6y1glfz.mongodb.net/what?retryWrites=true&w=majority";
     
     // Connect with optimized options for serverless
     await mongoose.connect(MONGO_URI, {
