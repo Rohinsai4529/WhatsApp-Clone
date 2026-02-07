@@ -1,29 +1,23 @@
 {
   "name": "whatsapp-clone",
   "version": "1.0.0",
-  "description": "A simple WhatsApp clone using Express, MongoDB, and EJS",
+  "description": "WhatsApp clone with Express, MongoDB, and EJS",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
     "seed": "node seed.js"
   },
-  "keywords": [
-    "chat",
-    "express",
-    "mongodb",
-    "ejs"
-  ],
+  "keywords": ["chat", "express", "mongodb", "ejs"],
   "author": "Rohin Sai Nomula",
   "license": "MIT",
   "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^4.22.1",
-    "method-override": "^3.0.0",
-    "mongoose": "^7.8.9"
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "mongoose": "^7.6.0",
+    "method-override": "^3.0.0"
   },
   "devDependencies": {
-    "@vercel/node": "^3.2.29",
     "nodemon": "^3.0.1"
   }
 }
