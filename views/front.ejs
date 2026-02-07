@@ -14,7 +14,7 @@
     </header>
 
     <main>
-      <% if (chats.length === 0) { %>
+      <% if (!chats || chats.length === 0) { %>
         <div class="empty-state">
           <div class="empty-icon">💬</div>
           <h2>No chats yet!</h2>
@@ -27,40 +27,42 @@
             <div class="chat-card">
               <div class="chat-header">
                 <div class="chat-names">
-                  <span class="from"><strong><%= chat.from %></strong></span>
+                  <span class="from"><strong><%= chat.from || 'Unknown' %></strong></span>
                   <span class="arrow">→</span>
-                  <span class="to"><strong><%= chat.to %></strong></span>
+                  <span class="to"><strong><%= chat.to || 'Unknown' %></strong></span>
                 </div>
                 <div class="chat-actions">
                   <a href="/chats/<%= chat._id %>/edit" class="btn-edit">✏️ Edit</a>
-                  <form method="POST" action="/chats/<%= chat._id %>?_method=DELETE" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this chat?')">
+                  <form method="POST" action="/chats/<%= chat._id %>?_method=DELETE" class="delete-form" onsubmit="return confirm('Are you sure?')">
                     <button type="submit" class="btn-delete">🗑️ Delete</button>
                   </form>
                 </div>
               </div>
               
               <div class="chat-message">
-                <p><%= chat.msg %></p>
+                <p><%= chat.msg || '(no message)' %></p>
               </div>
               
               <div class="chat-footer">
                 <span class="timestamp">
-                  📅 Created: <%= chat.createdAt.toLocaleString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    year: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  }) %>
+                  📅 Created: 
+                  <% if (chat.createdAt) { %>
+                    <%= chat.createdAt.toLocaleString() %>
+                  <% } else if (chat.create) { %>
+                    <%= chat.create.toLocaleString() %>
+                  <% } else { %>
+                    N/A
+                  <% } %>
                 </span>
                 <span class="timestamp">
-                  🔄 Updated: <%= chat.updatedAt.toLocaleString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    year: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                  }) %>
+                  🔄 Updated: 
+                  <% if (chat.updatedAt) { %>
+                    <%= chat.updatedAt.toLocaleString() %>
+                  <% } else if (chat.updatedate) { %>
+                    <%= chat.updatedate.toLocaleString() %>
+                  <% } else { %>
+                    N/A
+                  <% } %>
                 </span>
               </div>
             </div>
@@ -68,8 +70,6 @@
         </div>
       <% } %>
     </main>
-
-
   </div>
 </body>
 </html>
