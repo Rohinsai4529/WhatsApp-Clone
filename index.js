@@ -15,42 +15,33 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-// ========================================
-// MONGODB CONNECTION FOR VERCEL (CRITICAL)
-// ========================================
+// MongoDB Connection - USE ENVIRONMENT VARIABLE
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/what";
+
 let cachedConnection = null;
 
 async function connectDB() {
-  // Return cached connection if exists
   if (cachedConnection) {
     console.log("✅ Using cached MongoDB connection");
     return cachedConnection;
   }
 
   try {
-    // Disable buffering to prevent timeout
     mongoose.set("bufferCommands", false);
     
-    // const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/what";
-    const MONGO_URI = "mongodb+srv://rohinsainomula:Rohinsai@2418@cluster0.6y1glfz.mongodb.net/what?retryWrites=true&w=majority";
-    
-    // Connect with optimized options for serverless
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Faster timeout
-      maxPoolSize: 10, // Connection pool for serverless
+      serverSelectionTimeoutMS: 5000,
+      maxPoolSize: 10,
     });
 
     console.log("✅ MongoDB connected successfully");
-    
-    // Cache the connection for reuse
     cachedConnection = mongoose.connection;
     
-    // Handle connection events
     cachedConnection.on('error', (err) => {
       console.error('❌ MongoDB connection error:', err);
-      cachedConnection = null; // Clear cache on error
+      cachedConnection = null;
     });
     
     cachedConnection.on('disconnected', () => {
@@ -65,10 +56,12 @@ async function connectDB() {
   }
 }
 
-// ========================================
-// ROUTES
-// ========================================
+// Connect on startup for local development
+if (!process.env.VERCEL) {
+  connectDB();
+}
 
+// Routes
 app.get("/", (req, res) => {
   res.redirect("/chats");
 });
@@ -133,6 +126,7 @@ app.post("/chats", async (req, res) => {
       updatedAt: new Date(),
     });
     await newChat.save();
+    console.log("✅ Chat saved:", newChat._id);
     res.redirect("/chats");
   } catch (err) {
     console.error("❌ POST /chats error:", err.message);
@@ -189,29 +183,28 @@ app.use((req, res) => {
   res.status(404).send("404 - Page not found");
 });
 
-// ========================================
-// START SERVER (Local Only)
-// ========================================
+// Start server (Local Only)
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 8080;
   
-  // Connect on startup for local development
-  connectDB().then(() => {
-    app.listen(PORT, () => {
-      console.log("\n" + "=".repeat(50));
-      console.log("🚀 SERVER STARTED SUCCESSFULLY!");
-      console.log("=".repeat(50));
-      console.log(`✅ Server running on http://localhost:${PORT}`);
-      console.log(`✅ MongoDB connection state: ${mongoose.connection.readyState}`);
-      console.log(`\n📋 Available routes:`);
-      console.log(`   → Home:        http://localhost:${PORT}/`);
-      console.log(`   → Chats:       http://localhost:${PORT}/chats`);
-      console.log(`   → Debug:       http://localhost:${PORT}/debug-chats`);
-      console.log(`   → New Chat:    http://localhost:${PORT}/chats/new`);
-      console.log("=".repeat(50) + "\n");
-    });
-  }).catch(err => {
-    console.error("❌ Failed to start server:", err.message);
+  app.listen(PORT, () => {
+    console.log("\n" + "=".repeat(50));
+    console.log("🚀 SERVER STARTED SUCCESSFULLY!");
+    console.log("=".repeat(50));
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+    console.log(`✅ MongoDB connection state: ${mongoose.connection.readyState}`);
+    console.log(`\n📋 Available routes:`);
+    console.log(`   → Home:        http://localhost:${PORT}/`);
+    console.log(`   → Chats:       http://localhost:${PORT}/chats`);
+    console.log(`   → Debug:       http://localhost:${PORT}/debug-chats`);
+    console.log(`   → New Chat:    http://localhost:${PORT}/chats/new`);
+    console.log("=".repeat(50) + "\n");
+  }).on('error', (err) => {
+    console.error("❌ Server failed to start:", err.message);
+    if (err.code === 'EADDRINUSE') {
+      console.error(`⚠️  Port ${PORT} is already in use!`);
+      console.error(`💡 Try: PORT=3000 node index.js`);
+    }
     process.exit(1);
   });
 }
