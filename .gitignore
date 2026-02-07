@@ -45,3 +45,6 @@ coverage/
 # Build files (if you have any)
 dist/
 build/
+
+# Seed files (local only)
+seed-atlas.js
