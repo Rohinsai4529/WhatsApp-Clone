@@ -1,37 +1,4 @@
-// const mongoose = require('mongoose');
-// const Chat = require("./models/chat.js")
-// main()
-// .then(()=>{
-//     console.log("connection sucess");
-// }).catch(err => console.log(err));
 
-// async function main() {
-//   await mongoose.connect('mongodb://127.0.0.1:27017/what');
-
-// };
-
-// let  allchats = [{
-//     from:"siddu",
-//     to:"suchitha",
-//     msg:"ela unnavu",
-//     create:new Date(),
-//     updatedate:new Date()
-// },
-// {
-//     from:"pav",
-//     to:"akansha",
-//     msg:"ela rah",
-//     create:new Date(),
-//     updatedate:new Date()
-// },{
-//     from:"raj",
-//     to:"begum",
-//     msg:"chocolate ledha",
-//     create:new Date(),
-//     updatedate:new Date()
-// }
-// ];
-// Chat.insertMany(allchats);
 
 
 
